@@ -1,8 +1,12 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 // Connection URL
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const dbName = 'pomodoro-productivity';
+
+const id = new ObjectId();
+console.log(id);
+console.log(id.getTimestamp());
 
 async function connectToDatabase() {
   try {
@@ -24,27 +28,28 @@ async function connectToDatabase() {
 
     // console.log('Documents inserted: ', result);
 
-    // const result = await db.collection('users').insertOne({
-    //   name: 'Nancy',
-    //   age: 17,
-    // });
-    // console.log('Document inserted with _id:', result.insertedId);
+    const result = await db.collection('users').insertOne({
+      _id: id,
+      name: 'Ripley',
+      age: 28,
+    });
+    console.log('Document inserted with _id:', result.insertedId);
 
-    const result = await db.collection('tasks').insertMany([
-      {
-        description: 'pay utility bills',
-        completed: false,
-      },
-      {
-        description: 'pay rent',
-        completed: true,
-      },
-      {
-        description: 'go to pharmacy',
-        completed: false,
-      },
-    ]);
-    console.log('Documents inserted: ', result);
+    // const result = await db.collection('tasks').insertMany([
+    //   {
+    //     description: 'pay utility bills',
+    //     completed: false,
+    //   },
+    //   {
+    //     description: 'pay rent',
+    //     completed: true,
+    //   },
+    //   {
+    //     description: 'go to pharmacy',
+    //     completed: false,
+    //   },
+    // ]);
+    // console.log('Documents inserted: ', result);
 
     await client.close();
   } catch (error) {
