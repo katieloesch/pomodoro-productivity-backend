@@ -4,10 +4,6 @@ const { MongoClient, ObjectId } = require('mongodb');
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const dbName = 'pomodoro-productivity';
 
-const id = new ObjectId();
-console.log(id);
-console.log(id.getTimestamp());
-
 async function connectToDatabase() {
   try {
     const client = await MongoClient.connect(connectionURL);
@@ -15,25 +11,12 @@ async function connectToDatabase() {
 
     const db = client.db(dbName);
 
-    // const result = await db.collection('users').insertMany([
-    //   {
-    //     name: 'Sidney',
-    //     age: 17,
-    //   },
-    //   {
-    //     name: 'Laurie',
-    //     age: 18,
-    //   },
-    // ]);
-
-    // console.log('Documents inserted: ', result);
-
-    const result = await db.collection('users').insertOne({
-      _id: id,
-      name: 'Ripley',
-      age: 28,
-    });
-    console.log('Document inserted with _id:', result.insertedId);
+    // CREATE
+    // const result = await db.collection('users').insertOne({
+    //   name: 'Ripley',
+    //   age: 28,
+    // });
+    // console.log('Document inserted with _id:', result.insertedId);
 
     // const result = await db.collection('tasks').insertMany([
     //   {
@@ -51,9 +34,20 @@ async function connectToDatabase() {
     // ]);
     // console.log('Documents inserted: ', result);
 
+    // READ
+    const result = await db
+      .collection('users')
+      .findOne({ _id: new ObjectId('66cba12ab507252ccecacdf5') });
+
+    if (result) {
+      console.log('Found a document:', result);
+    } else {
+      console.log('No document matches the provided query.');
+    }
+
     await client.close();
   } catch (error) {
-    console.error('Unable to connect to database:', error.message);
+    console.error('Unable to connect to database:', error);
   }
 }
 
